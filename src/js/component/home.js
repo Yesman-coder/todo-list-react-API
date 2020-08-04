@@ -2,6 +2,18 @@ import React, { useState } from "react";
 import { Card } from "./card";
 
 export function Home() {
+	const handleAdd = () => {
+		setListItems([...listItems, newItem]);
+		setNewItem("");
+	};
+
+	const handleDelete = itemToDelete => {
+		const newList = listItems.filter((newItem, index) => {
+			return newItem != itemToDelete;
+		});
+		setListItems(newList);
+	};
+
 	const [listItems, setListItems] = useState([]);
 	const [newItem, setNewItem] = useState("");
 	return (
@@ -13,38 +25,34 @@ export function Home() {
 					setNewItem(event.target.value);
 				}}
 				value={newItem}
-				placeholder="Agregar Nueva Tarea"
+				placeholder="What needs to be done"
 			/>
 			<button
-				className="btn btn-dark"
-				onClick={e => {
-					if (newItem != "") {
-						let item = {
-							newItem: newItem
-						};
-						let tasks = [];
-						for (let task of listItems) {
-							tasks.push(task);
-						}
-						tasks.push(item);
-						setListItems(tasks);
-						setNewItem("");
-					} else {
-						alert("Por favor agregue Nueva Tarea");
-					}
-				}}>
-				{"Agregar"}
+				type="button"
+				className="btn btn-primary"
+				onClick={handleAdd}>
+				{"Add task"}
 			</button>
-			<ul>
-				<li style={{ listStyleType: "none" }}>
-					{" "}
-					{listItems.map((item, index) => {
-						return <Card key={index} name={item.newItem} />;
+			<div className="text-center mt-5">
+				<ul className="list-group">
+					{listItems.map((newItem, index) => {
+						return (
+							<li
+								className="list-group-item"
+								key={index}
+								onClick={event => handleDelete(newItem)}>
+								<Card name={newItem} />
+							</li>
+						);
 					})}
-				</li>
-			</ul>
-			<label htmlFor="taskleft">
-				You have {listItems.length} tasks to do
+				</ul>
+			</div>
+			<label
+				className={`text-success font-weight-bold ${
+					listItems.length > 0 ? "text-danger" : ""
+				}`}
+				htmlFor="taskleft">
+				{listItems.length} items left
 			</label>
 		</div>
 	);
