@@ -1,8 +1,8 @@
 import React, { useState } from "react";
+import { AddTask } from "./addtask";
 
 export function Home() {
 	const [newUser, setNewUser] = useState("");
-
 	const [listItems, setListItems] = useState([]);
 	const [newItem, setNewItem] = useState({});
 
@@ -56,7 +56,7 @@ export function Home() {
 
 	return (
 		<div className="form-group my-5 mx-5 text-center">
-			<label htmlFor="exampleInputEmail1">Create User</label>
+			<h1 className="my-5">Create New User</h1>
 			<input
 				className="form-control form control-lg"
 				type="text"
@@ -87,9 +87,7 @@ export function Home() {
 			</button>
 			<div className="text-center mt-5">
 				<ul className="list-group">
-					<label htmlFor="exampleInputEmail1">
-						Tasks for {newUser}
-					</label>
+					<h2>Tasks for {newUser}</h2>
 					{listItems.map((newItem, index) => {
 						return (
 							<li
@@ -101,6 +99,14 @@ export function Home() {
 						);
 					})}
 				</ul>
+				<AddTask />
+				<label
+					className={`text-success font-weight-bold ${
+						listItems.length > 0 ? "text-danger" : ""
+					}`}
+					htmlFor="taskleft">
+					{listItems.length} items left
+				</label>
 			</div>
 		</div>
 	);
